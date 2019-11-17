@@ -1,5 +1,5 @@
 <template>
-  <v-app id="app" >
+  <v-app >
     <div>
       <v-app-bar height="65" dark>
         <router-link
@@ -63,17 +63,14 @@
       </v-container>
     </div>
     <router-view></router-view>
+    <v-footer absolute="true" height="50" color="#424242">
+      <v-spacer></v-spacer>
+      <div>&copy; {{ new Date().getFullYear() }}</div>
+    </v-footer>
+
   </v-app>
 
 
 </template>
 
 
-<script>
-
-export default {
-  name: 'App',
-  components: {
-  },
-};
-</script>
