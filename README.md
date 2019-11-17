@@ -1,4 +1,4 @@
-# mwo
+# zespolowe
 
 ## Project setup
 ```

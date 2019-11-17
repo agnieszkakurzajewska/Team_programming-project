@@ -1,6 +1,6 @@
 module.exports = {
   "lintOnSave": false,
-  "publicPath": "/mwo",
+  "publicPath": "/vue.config.js-potem-zmienic-nazwe",
   "transpileDependencies": [
     "vuetify"
   ]
