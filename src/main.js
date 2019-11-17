@@ -6,6 +6,7 @@ import Community from './components/Community'
 import Favourites from './components/Favourites'
 import UserAccount from './components/UserAccount'
 import Journeys from './components/Journeys'
+import AddJourney from './components/AddJourney'
 
 
 import vuetify from './plugins/vuetify';
@@ -18,6 +19,7 @@ const routes = [
   {path: '/user-account', component: UserAccount},
   {path: '/favourites', component: Favourites},
   {path: '/journeys', component: Journeys},
+  {path: '/add-journey', component: AddJourney},
 ];
 
 const router = new VueRouter({
