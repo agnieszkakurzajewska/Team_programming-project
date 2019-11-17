@@ -3,7 +3,7 @@
    <div>
     <v-app-bar height="65" dark>
 
-     <v-toolbar-title>Nazwa sklepu</v-toolbar-title>
+     <v-toolbar-title>Nazwa strony</v-toolbar-title>
 
      <div class="flex-grow-1"></div>
 
