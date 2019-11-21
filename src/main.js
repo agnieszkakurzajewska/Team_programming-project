@@ -3,13 +3,23 @@ import VueRouter from 'vue-router';
 import App from './App.vue'
 import MainPage from './components/MainPage'
 import Community from './components/Community'
+import Favourites from './components/Favourites'
+import UserAccount from './components/UserAccount'
+import Journeys from './components/Journeys'
+import AddJourney from './components/AddJourney'
+
+
 import vuetify from './plugins/vuetify';
 
 Vue.use(VueRouter);
 
 const routes = [
   {path: '/', component: MainPage},
-  {path: '/community', component: Community}
+  {path: '/community', component: Community},
+  {path: '/user-account', component: UserAccount},
+  {path: '/favourites', component: Favourites},
+  {path: '/journeys', component: Journeys},
+  {path: '/add-journey', component: AddJourney},
 ];
 
 const router = new VueRouter({
