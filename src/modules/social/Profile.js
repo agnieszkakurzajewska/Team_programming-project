@@ -7,8 +7,8 @@ class Profile {
         this.photos = [];
         this.friends = [];
         this.groups = [];
-        this.observers = [];
-        this.observing = [];
+        this.followers = [];
+        this.following = [];
     }
 
     setProfilePhoto(path){
@@ -51,6 +51,8 @@ class Profile {
         document.getElementById("personal-data").innerHTML = this.name + ", " + this.age;
         document.getElementById("personal-description").innerHTML = this.description;
         document.getElementById("profile-photo").src = this.photos[0];
+        document.getElementById("followers-count").innerHTML = "Followers: " + this.followers.length;
+        document.getElementById("following-count").innerHTML = "Following: " + this.following.length;
 
         if(this.photos.length>12){
             let imageDivs = document.getElementsByClassName("thumbnail-image");
@@ -64,15 +66,29 @@ class Profile {
         }
     }
 
-    addObserver(observer){
-        this.observers.push(observer);
+    addFollower(follower){
+        this.followers.push(follower);
     }
 
-    addOberving(observing){
-        this.observing.push(observing);
+    dropFollower(follower){
+        let index = this.followers.indexOf(follower);
+        this.followers.splice(index, 1);
+    }
+
+    addFollowing(following){
+        this.following.push(following);
+    }
+
+    dropFollowing(following){
+        let index = this.following.indexOf(following);
+        this.following.splice(index, 1);
     }
 
     addGroup(group){
         this.groups.push(group);
+    }
+
+    hasFollower(follower){
+        return this.followers.includes(follower);
     }
 }

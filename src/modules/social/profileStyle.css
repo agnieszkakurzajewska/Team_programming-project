@@ -110,4 +110,15 @@ img {
 #personal-data{
     text-align: center;
     font-size: 20px;
+    margin: 0px;
+    margin-top: 5px;
+}
+
+#followers{
+    display: flex;
+}
+
+#followers-count, #following-count{
+    flex: 1;
+    text-align: center;
 }
