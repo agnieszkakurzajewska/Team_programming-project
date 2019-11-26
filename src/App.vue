@@ -1,7 +1,7 @@
 <template>
   <v-app id="app">
     <div>
-      <v-app-bar height="65" dark>
+      <v-app-bar height="65" class="blue">
 
         <v-toolbar-title>Flocker</v-toolbar-title>
 
