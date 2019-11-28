@@ -1,37 +1,23 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router';
 import App from './App.vue'
-import MainPage from './components/MainPage'
-import Community from './components/Community'
-import Favourites from './components/Favourites'
-import UserAccount from './components/UserAccount'
-import Journeys from './components/Journeys'
-import AddJourney from './components/AddJourney'
-
-
+import router from './router'
 import vuetify from './plugins/vuetify';
+import firebase from 'firebase';
+import './components/firebaseInit'
 
-Vue.use(VueRouter);
+Vue.config.productionTip= false;
 
-const routes = [
-  {path: '/', component: MainPage},
-  {path: '/community', component: Community},
-  {path: '/user-account', component: UserAccount},
-  {path: '/favourites', component: Favourites},
-  {path: '/journeys', component: Journeys},
-  {path: '/add-journey', component: AddJourney},
-];
-
-const router = new VueRouter({
-  routes,
-  mode: 'history'
+let app;
+firebase.auth().onAuthStateChanged(function(user) {
+  if (!app) {
+    app = new Vue({
+      vuetify,
+      el: '#app',
+      router,
+      template: '<App/>',
+      components: { App },
+      render: h => h(App)
+    });
+  }
 });
-
-new Vue({
-  vuetify,
-  el: '#app',
-  router,
-  render: h => h(App)
-});
-
 
