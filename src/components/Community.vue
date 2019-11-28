@@ -2,6 +2,8 @@
 
 <template >
   <body>
+
+
   <v-card height="800" >
     <v-navigation-drawer
       :mini-variant.sync="mini"
@@ -29,11 +31,7 @@
 </template>
 
 <script>
-  // import AddJourney from './AddJourney'
   export default {
-    components: {
-      // AddJourney,
-    },
     data () {
       return {
         drawer: true,

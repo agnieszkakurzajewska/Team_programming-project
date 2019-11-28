@@ -88,6 +88,13 @@
 
       <v-icon tag="v-btn" v-if="isLoggedIn" v-on:click='logout'>mdi-power</v-icon>
 
+            <ul>
+              <li v-for="user in users"
+              v-bind:key="user.id">
+                {{user.login}}
+              </li>
+            </ul>
+
     </v-app-bar >
 
     <v-container fluid class="ma-0 pa-0">
@@ -129,9 +136,8 @@
         querySnaphot.forEach(doc => {
           const data = {
             "id": doc.id,
-            'user_id': doc.data().user_id,
-            'user_login': doc.data().user_login,
-            'user_password': doc.data().user_passsword,
+            'login': doc.data().login,
+            'password': doc.data().passsword,
           }
           this.users.push(data)
         })
