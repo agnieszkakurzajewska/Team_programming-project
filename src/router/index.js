@@ -9,6 +9,7 @@ import Journeys from '@/components/Journeys'
 import Login from '@/components/Login'
 import Register from '@/components/Register'
 import firebase from 'firebase'
+import ProfilePage from "../components/ProfilePage";
 
 Vue.use(Router)
 
@@ -74,6 +75,14 @@ let router =  new Router({
       path: '/journeys',
       name: 'Journeys',
       component: Journeys,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/profile-page',
+      name: 'ProfilePage',
+      component: ProfilePage,
       meta: {
         requiresAuth: true
       }

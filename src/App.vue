@@ -105,7 +105,7 @@
 
 
 
-    <v-footer absolute="true" height="50" color="#424242">
+    <v-footer app="true" height="50" color="#424242">
       <v-spacer></v-spacer>
           &copy; {{ new Date().getFullYear() }}
     </v-footer>
