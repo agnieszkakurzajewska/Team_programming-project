@@ -1,3 +1,11 @@
+<!--
+    Strona główna profilu społecznego (dostępna pod adresem /profile-page)
+    StyleSheet --- modules > styles > profile.style.module.css
+    żeby podać id osoby, której profil ma być wyświetlony trzeba będzie uzupełnić link o "?id=x", gdzie x to id osoby (np. 1 albo 9) -- jeszcze nie działa
+    bo baza danych nie jest zrobiona, uzupełnię tą funkcjonalność później.
+
+    Autor: Krzychu
+-->
 <template>
     <main id="main-profile">
         <section id="profile-info">
@@ -15,7 +23,8 @@
 
         <section id="profile-interact">
             <div id="view-photos-div">
-                <div class="shade"><h3 class="shade-header">View Photos</h3></div>
+                <!-- kliknięcie na cień przenosi do strony ze zdjęciami (która jeszcze nie działa) -->
+                <a href="http://localhost:8080/#/photo-gallery"><div class="shade"><h3 class="shade-header">View Photos</h3></div></a>
                 <div class="modal-displayer"></div>
                 <div id="profile-show-photos">
                     <div class="row">
@@ -52,5 +61,5 @@
     }
 </script>
 
-<style src="../modules/style.module.css">
+<style src="../modules/styles/profile.style.module.css">
 </style>
