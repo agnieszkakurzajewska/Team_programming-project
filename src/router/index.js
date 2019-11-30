@@ -10,6 +10,7 @@ import Login from '@/components/Login'
 import Register from '@/components/Register'
 import firebase from 'firebase'
 import ProfilePage from "../components/ProfilePage";
+import PhotoGallery from "../components/PhotoGallery";
 
 Vue.use(Router)
 
@@ -87,6 +88,14 @@ let router =  new Router({
         requiresAuth: true
       }
     },
+    {
+      path: '/photo-gallery',
+      name: 'PhotoGallery',
+      component: PhotoGallery,
+      meta: {
+        requiresAuth: true
+      }
+    }
   ],
 
 });

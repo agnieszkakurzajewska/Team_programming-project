@@ -67,6 +67,15 @@
     position: relative;
 }
 
+#gallery-photos{
+    max-width: calc(100% - 20px);
+    max-height: calc(100% - 20px);
+    display: flex;
+    flex-direction: column;
+    background-color: #999;
+    overflow: hidden;
+}
+
 .shade{
     height: calc(100% - 20px);
     width: calc(100% - 20px);
