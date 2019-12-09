@@ -125,13 +125,29 @@
     },
     methods: {
       logout: function() {
+        /* eslint-disable no-console */
+        console.log(firebase.auth().currentUser);
+        /* eslint-enable no-console */
         firebase.auth().signOut().then(() => {
           this.$router.go({path: this.$router.path});
 
         })
+      }/*,
+      // test update to db
+      pass: function () {
+        let data = {
+          email: 'a@gmail.com',
+          last_name: "Kowalski",
+          name: "Adam",
+          password: "123"
+        }
+        db.collection('Users').doc('aaa').set(data);
       }
+      */
     },
     created () {
+      // test
+      //this.pass();
       db.collection('users').get().then(querySnaphot => {
         querySnaphot.forEach(doc => {
           const data = {

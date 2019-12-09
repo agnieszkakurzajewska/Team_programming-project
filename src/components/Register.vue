@@ -44,6 +44,7 @@
 
 <script>
   import firebase from 'firebase'
+  import {addUser} from './DBFunctions'
   export default {
     data: () => ({
       passwordVisible: false,
@@ -67,8 +68,12 @@
           .createUserWithEmailAndPassword(this.email, this.password)
           .then(
             user => {
-              // console.log(user);
+              var str = user.user.uid;
+              /* eslint-disable no-console */
+              console.log(str);
+              /* eslint-enable no-console */
               this.$router.go({ path: this.$router.path });
+              addUser(str,this.email);
             },
             err => {
               alert(err.message);
