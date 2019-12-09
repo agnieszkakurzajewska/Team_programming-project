@@ -1,7 +1,7 @@
 import db from './firebaseInit'
 
-// add user
-// usage:
+// dodaj uzytkownika
+// wzorzec:
 // if (firebase.auth().currentUser)
 //   addUser(firebase.auth().currentUser.uid,firebase.auth().currentUser.email);
 function addUser(id,email) {
@@ -15,12 +15,20 @@ function addUser(id,email) {
     db.collection('Users').doc(id).set(data);
 }
 
-// set user name
-// usage:
+// imie uzytkownika
+// wzorzec:
 // if (firebase.auth().currentUser)
-//   addUser(firebase.auth().currentUser.uid,"Adam");
-function UserName(id,name) {
+//   setUserName(firebase.auth().currentUser.uid,"Adam");
+function setUserName(id,name) {
     db.collection('Users').doc(id).update({name: name});
 }
 
-export {addUser,UserName};
+// nazwisko uzytkownika
+// wzorzec:
+// if (firebase.auth().currentUser)
+//   setUserLastName(firebase.auth().currentUser.uid,"Kowalski");
+function setUserLastName(id,nazwisko) {
+    db.collection('Users').doc(id).update({last_name: nazwisko});
+}
+
+export {addUser,setUserName,setUserLastName};
