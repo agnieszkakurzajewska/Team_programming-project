@@ -9,7 +9,8 @@ function addUser(id,email) {
         email: '',
         last_name: '',
         name: '',
-        password: ''
+        password: '',
+        photo: ''
     }
     data.email = email;
     db.collection('Users').doc(id).set(data);
