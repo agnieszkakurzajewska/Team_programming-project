@@ -2,19 +2,33 @@
 
 <template >
 <body>
+
   <v-card height="800" >
     <v-carousel
+      show-arrows-on-hover
       cycle
       height="800"
-      interval = "2000"
+      interval = "5000"
       show-arrows = "false"
     >
       <v-carousel-item
         v-for="(item, i) in items"
         :key="i"
-        :src ="item.src">
+        :src ="item.src"
+      alt = "aaa">
         <div class="display-3"></div>
-
+        <v-btn
+          absolute
+          x-large
+          dark
+          rounded
+          color="primary"
+          elevation="24"
+          :style="{left: '50%', transform:'translateX(-50%)', top: '40%'}"
+          to="/add-journey"
+        >
+          Zaplanuj podróż
+        </v-btn>
       </v-carousel-item>
     </v-carousel>
 
@@ -24,26 +38,27 @@
 </template>
 
 <script>
-  // import AddJourney from './AddJourney'
   export default {
     components: {
-      // AddJourney,
     },
     data () {
       return {
         drawer: true,
         items: [
           {
-            src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Tour_eiffel_paris-eiffel_tower.jpg/1599px-Tour_eiffel_paris-eiffel_tower.jpg',
+            src: 'https://i.ibb.co/XJkBDG6/339176-PA5-M6-S-588.jpg',
           },
           {
-            src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Colosseum_in_Rome-April_2007-1-_copie_2B.jpg/800px-Colosseum_in_Rome-April_2007-1-_copie_2B.jpg',
+            src: 'https://i.ibb.co/1MYkGM3/ODRAOS0.jpg',
           },
           {
-            src: 'https://printground.net/wp-content/uploads/2017/04/statue.jpg',
+            src: 'https://i.ibb.co/K684d7V/12856.jpg',
           },
           {
-            src: 'https://www.goodfreephotos.com/cache/england/london/cityscape-and-capital-in-london-england.jpg',
+            src: 'https://i.ibb.co/xJBym0C/OS5DEC0.jpg',
+          },
+          {
+            src: 'https://i.ibb.co/tLZ8d4h/OEM9DY0.jpg',
           },
         ],
         mini: true,

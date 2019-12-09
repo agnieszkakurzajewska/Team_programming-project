@@ -6,12 +6,22 @@
 
       <h1 text-align="center"><br><br>Rejestracja</h1>
 
+
       <v-col cols="12" md="4">
         <v-text-field
-        v-model="email"
-        :rules="emailRules"
-        label="E-mail"
-        required
+          label="Login"
+          placeholder=" "
+          required
+        ></v-text-field>
+      </v-col>
+
+      <v-col cols="12" md="4">
+        <v-text-field
+          v-model="email"
+          :rules="emailRules"
+          label="E-mail"
+          placeholder=" "
+          required
         ></v-text-field>
       </v-col>
 
@@ -25,16 +35,16 @@
           name="input-10-2"
           label="Hasło"
           hint="At least 8 characters"
-          value="wqfasds"
-          :counter="10"
+          placeholder=" "
+          :counter="15"
           class="input-group--focused"
           @click:append="passwordVisible  =!passwordVisible"
         ></v-text-field>
       </v-col>
 
       <v-col>
-        <v-btn v-on:click="register">
-        Zarejestruj się
+        <v-btn v-on:click="register" color="primary">
+          Zarejestruj się
         </v-btn>
       </v-col>
     </v-col>
@@ -44,7 +54,7 @@
 
 <script>
   import firebase from 'firebase'
-  import {addUser} from './DBFunctions'
+
   export default {
     data: () => ({
       passwordVisible: false,
@@ -68,12 +78,8 @@
           .createUserWithEmailAndPassword(this.email, this.password)
           .then(
             user => {
-              var str = user.user.uid;
-              /* eslint-disable no-console */
-              console.log(str);
-              /* eslint-enable no-console */
+              // console.log(user);
               this.$router.go({ path: this.$router.path });
-              addUser(str,this.email);
             },
             err => {
               alert(err.message);

@@ -1,5 +1,4 @@
 <template>
-
   <v-form align = "center" v-model="valid" >
 
     <v-col align="center">
@@ -8,10 +7,11 @@
 
       <v-col cols="12" md="4">
         <v-text-field
-        v-model="email"
-        :rules="emailRules"
-        label="E-mail"
-        required
+          v-model="email"
+          :rules="emailRules"
+          label="E-mail"
+          placeholder=" "
+          required
         ></v-text-field>
       </v-col>
 
@@ -24,17 +24,18 @@
           :type="passwordVisible ? 'text' : 'password'"
           name="input-10-2"
           label="Hasło"
+          placeholder=" "
           hint="At least 8 characters"
           value="wqfasds"
-          :counter="10"
+          :counter="15"
           class="input-group--focused"
           @click:append="passwordVisible  =!passwordVisible"
         ></v-text-field>
       </v-col>
 
       <v-col>
-        <v-btn v-on:click="login">
-        zaloguj się
+        <v-btn v-on:click="login" color="primary">
+          zaloguj się
         </v-btn>
       </v-col>
 
@@ -45,6 +46,7 @@
 
 <script>
   import firebase from 'firebase'
+
   export default {
     data: () => ({
       passwordVisible: false,

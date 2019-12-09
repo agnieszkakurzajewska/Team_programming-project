@@ -4,8 +4,6 @@
     <v-app-bar height="65" dark>
 
       <v-row >
-
-
       <router-link
         to="/"
         tag="v-btn">
@@ -88,12 +86,6 @@
 
       <v-icon tag="v-btn" v-if="isLoggedIn" v-on:click='logout'>mdi-power</v-icon>
 
-            <ul>
-              <li v-for="user in users"
-              v-bind:key="user.id">
-                {{user.login}}
-              </li>
-            </ul>
 
     </v-app-bar >
 
@@ -104,17 +96,12 @@
 
 
 
-
-    <v-footer app="true" height="50" color="#424242">
-      <v-spacer></v-spacer>
-          &copy; {{ new Date().getFullYear() }}
-    </v-footer>
-
   </v-app>
 </template>
 <script>
   import db from './components/firebaseInit'
   import firebase from 'firebase'
+
   export default{
     data () {
       return {
