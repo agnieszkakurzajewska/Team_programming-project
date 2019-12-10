@@ -99,5 +99,30 @@ function getTravels(id) {
         });
 }
 
+function allusers() {
+    let userRef = db.collection('Users');
+    return userRef.get()
+        .then(snapshot => {
+            var users = [];
+            if (snapshot.empty) {
+                // eslint-disable-next-line no-console
+                console.log('No matching documents.');
+                return users;
+            }
 
-export {addUser,setUserName,setUserLastName,getUserName,getTravels};
+            snapshot.forEach(doc => {
+                // eslint-disable-next-line no-console
+                console.log(doc.id, '=>', doc.data());
+                users.push(doc.data());
+            });
+            return users;
+        })
+        .catch(err => {
+            // eslint-disable-next-line no-console
+            console.log('Error getting documents', err);
+            return;
+        });
+}
+
+
+export {addUser,setUserName,setUserLastName,getUserName,getTravels,allusers};

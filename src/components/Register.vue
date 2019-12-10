@@ -54,6 +54,7 @@
 
 <script>
   import firebase from 'firebase'
+  import {addUser} from './DBFunctions'
 
   export default {
     data: () => ({
@@ -79,7 +80,8 @@
           .then(
             user => {
               // console.log(user);
-              this.$router.go({ path: this.$router.path });
+              //this.$router.go({ path: this.$router.path });
+              addUser(user.user.uid,this.email);
             },
             err => {
               alert(err.message);
