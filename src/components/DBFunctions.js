@@ -9,10 +9,21 @@ function addUser(id,email) {
         email: '',
         last_name: '',
         name: '',
-        password: ''
-    }
+        password: '',
+        photo: ''
+    };
     data.email = email;
     db.collection('Users').doc(id).set(data);
+    let profileData = {
+        desc: '',
+        followers: 0,
+        following: 0,
+        home: '',
+        id_user: db.doc('Users/' + id),
+        photo: '',
+    };
+    db.collection('Profiles').doc().set(profileData);
+    console.log('account created');
 }
 
 // ustal imie uzytkownika
