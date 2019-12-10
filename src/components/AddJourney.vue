@@ -4,9 +4,6 @@
       v-model="dialog"
       width="500"
     >
-      <template v-slot:activator="{ on }">
-        <v-btn x-large v-on="on" color="primary" depressed elevation="24" rounded>Zaplanuj podróż</v-btn>
-      </template>
 
       <v-card>
         <v-card-title>

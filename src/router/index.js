@@ -8,7 +8,10 @@ import Favourites from '@/components/Favourites'
 import Journeys from '@/components/Journeys'
 import Login from '@/components/Login'
 import Register from '@/components/Register'
-import firebase from 'firebase'
+import firebase from 'firebase/app';
+
+import 'firebase/auth';
+import 'firebase/firestore';
 import ProfilePage from "../components/ProfilePage";
 import PhotoGallery from "../components/PhotoGallery";
 

@@ -5,27 +5,51 @@
 
 
   <v-card height="800" >
-    <v-navigation-drawer
-      :mini-variant.sync="mini"
-      right
-      dark
-      absolute
-      mini-variant-width="170px"
-    >
-      <v-list-item>
-        <v-list-item-title>Społeczności</v-list-item-title>
+    <v-app-bar height="45">
+      <v-spacer></v-spacer>
+      <h3 style="color:#1975d2">SPOŁECZNOŚCI</h3>
+      <v-spacer></v-spacer>
+    </v-app-bar >
+<v-container fluid >
+  <v-list-item>
+    <v-list-item-content>
+      <v-list-item-title>Single-line item</v-list-item-title>
+    </v-list-item-content>
+  </v-list-item>
 
-        <v-btn
-          icon
-          @click.stop="mini = !mini"
-        >
-          <v-icon>mdi-chevron-left</v-icon>
-        </v-btn>
+  <v-list-item two-line>
+    <v-list-item-content>
+      <v-list-item-title>Two-line item</v-list-item-title>
+      <v-list-item-subtitle>Secondary text</v-list-item-subtitle>
+    </v-list-item-content>
+  </v-list-item>
 
-      </v-list-item>
-      <v-divider></v-divider>
-    </v-navigation-drawer>
+  <v-list-item three-line>
+    <v-list-item-content>
+      <v-list-item-title>Three-line item</v-list-item-title>
+      <v-list-item-subtitle>
+        Secondary line text Lorem ipsum dolor sit amet,
+      </v-list-item-subtitle>
+      <v-list-item-subtitle>
+        consectetur adipiscing elit.
+      </v-list-item-subtitle>
+    </v-list-item-content>
+  </v-list-item>
+</v-container>
   </v-card>
+
+  <v-btn
+    absolute
+    x-large
+    dark
+    rounded
+    color="primary"
+    elevation="24"
+    :style="{left: '90%', transform:'translateX(-50%)', top: '85%'}"
+    to="/add-journey"
+  >
+    Stwórz grupę
+  </v-btn>
 
   </body>
 </template>

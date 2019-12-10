@@ -5,25 +5,24 @@
 
       <v-row >
       <router-link
-        to="/"
-        tag="v-btn">
+        to="/">
         <img src="./assets/logo-dark.png" height="65">
       </router-link>
 
 
       <div class="flex-grow-1"></div>
 
-      <v-col cols="12" sm="6" md="3" >
-        <v-text-field
-          v-if="isLoggedIn"
-          font-color="black"
-          placeholder="Podaj wyszukiwaną frazę"
-        ></v-text-field>
-      </v-col>
+<!--      <v-col cols="12" sm="6" md="3" >-->
+<!--        <v-text-field-->
+<!--          v-if="isLoggedIn"-->
+<!--          font-color="black"-->
+<!--          placeholder="Podaj wyszukiwaną frazę"-->
+<!--        ></v-text-field>-->
+<!--      </v-col>-->
 
-      <v-btn icon v-if="isLoggedIn">
-        <v-icon >mdi-magnify</v-icon>
-      </v-btn>
+<!--      <v-btn icon v-if="isLoggedIn">-->
+<!--        <v-icon >mdi-magnify</v-icon>-->
+<!--      </v-btn>-->
 
 
         <v-col align="end" >
@@ -45,47 +44,24 @@
         </v-col>
       </v-row>
 
-      <router-link
-        v-if="isLoggedIn"
-        to="/favourites"
-        tag="v-btn">
-        <v-btn icon>
+        <v-btn icon v-if="isLoggedIn" to="/favourites">
           <v-icon>mdi-heart</v-icon>
         </v-btn>
-      </router-link>
 
-      <router-link
-        v-if="isLoggedIn"
-        to="/community"
-        tag="v-btn">
-        <v-btn icon>
+        <v-btn icon v-if="isLoggedIn" to="/community">
           <v-icon>mdi-account-group</v-icon>
         </v-btn>
-      </router-link>
 
-      <router-link
-        v-if="isLoggedIn"
-        to="/journeys"
-        tag="v-btn">
-        <v-btn icon>
+        <v-btn icon v-if="isLoggedIn" to="/journeys">
           <v-icon>mdi-airplane-takeoff</v-icon>
         </v-btn>
-      </router-link>
 
-      <router-link
-        v-if="isLoggedIn"
-        to="/user-account"
-        tag="v-btn">
-        <v-btn icon>
+        <v-btn icon v-if="isLoggedIn" to="/user-account">
           <v-icon>mdi-account</v-icon>
         </v-btn>
-      </router-link>
-
-
-      <v-app-bar-nav-icon v-if="isLoggedIn"></v-app-bar-nav-icon>
-
-      <v-icon tag="v-btn" v-if="isLoggedIn" v-on:click='logout'>mdi-power</v-icon>
-
+      <v-btn icon v-if="isLoggedIn" v-on:click='logout'>
+        <v-icon>mdi-power</v-icon>
+      </v-btn>
 
     </v-app-bar >
 
@@ -100,7 +76,9 @@
 </template>
 <script>
   import db from './components/firebaseInit'
-  import firebase from 'firebase'
+  import firebase from 'firebase/app';
+  import 'firebase/auth';
+  import 'firebase/firestore';
 
   export default{
     data () {

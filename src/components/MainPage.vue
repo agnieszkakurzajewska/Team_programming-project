@@ -5,7 +5,7 @@
 
   <v-card height="800" >
     <v-carousel
-      show-arrows-on-hover
+      show-arrows-on-hover = "true"
       cycle
       height="800"
       interval = "5000"
