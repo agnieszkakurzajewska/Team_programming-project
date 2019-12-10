@@ -12,7 +12,7 @@
         </section>
         <section id="chat-window">
             <div class="header" id="user-header">
-                <p>Ziomuś</p>
+                <p id="target-name">Ziomuś</p>
             </div>
             <article id="main-chat">
             </article>
@@ -39,12 +39,21 @@
                 currentTarget: '',
                 currentChatName: '',
                 messages: [],
-                chatUsers: []
+                chatUsers: [],
+                profile: location.href.split("?")[1]
             }
         },
         mounted(){
+            this.onLoad();
         },
         methods:{
+            onLoad(){
+                if(this.profile.length > 5){
+                    this.currentTarget = this.profile;
+                    this.getChatRoom(this.profile);
+                }
+            },
+
             /**
              * funkcja odpowiadająca za wysyłanie wiadomości
              */
@@ -74,6 +83,7 @@
              */
             loadChatRoom(){
                 let chat = document.getElementById('main-chat');
+                document.getElementById('target-name').innerHTML = this.currentTarget;
 
                 while(chat.firstChild){
                     chat.removeChild(chat.firstChild);
@@ -258,6 +268,7 @@
     }
 
     #new-conv-user{
+        background: #424242;
         width: calc(80% - 5px);
         margin: 5px;
         height: 100%;

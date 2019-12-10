@@ -24,7 +24,7 @@
         <section id="profile-interact">
             <div id="view-photos-div">
                 <!-- kliknięcie na cień przenosi do strony ze zdjęciami (która jeszcze nie działa) -->
-                <a href="http://localhost:8080/#/photo-gallery" id="shade-link"><div class="shade"><h3 class="shade-header">View Photos</h3></div></a>
+                <a href="http://localhost:8081/#/photo-gallery" id="shade-link"><div class="shade"><h3 class="shade-header">View Photos</h3></div></a>
                 <div class="modal-displayer"></div>
                 <div id="profile-show-photos">
                     <div class="row">
@@ -49,7 +49,7 @@
             </div>
             <div id="profile-buttons">
                 <v-btn class="profile-button" @click="follow()" id="follow-user">Follow</v-btn>
-                <v-btn class="profile-button" @click="message()" id="send-message">Send Message</v-btn>
+                <v-btn class="profile-button" href="http://localhost:8081/#/chats" id="send-message">Send Message</v-btn>
             </div>
         </section>
     </main>
@@ -88,6 +88,7 @@
                     const buttons = document.getElementById('profile-buttons');
                     buttons.style.display = "none";
                 }
+                document.getElementById('send-message').href = "http://localhost:8081/#/chats?" + this.profile;
             },
 
             /**
@@ -215,7 +216,9 @@
                 });
                 this.loadFollow();
             },
-            message(){}
+            message(){
+
+            }
         }
     }
 </script>
