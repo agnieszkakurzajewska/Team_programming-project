@@ -24,7 +24,7 @@
         <section id="profile-interact">
             <div id="view-photos-div">
                 <!-- kliknięcie na cień przenosi do strony ze zdjęciami (która jeszcze nie działa) -->
-                <a href="http://localhost:8080/#/photo-gallery"><div class="shade"><h3 class="shade-header">View Photos</h3></div></a>
+                <a href="http://localhost:8080/#/photo-gallery" id="shade-link"><div class="shade"><h3 class="shade-header">View Photos</h3></div></a>
                 <div class="modal-displayer"></div>
                 <div id="profile-show-photos">
                     <div class="row">
@@ -69,16 +69,27 @@
                 followers: 0,
                 following: 0,
                 //allPictures: [], to na przyszłość jakbym miał czas zrobić to ładniej
-                storageRef: firebase.storage().ref(),
                 profile: location.href.split("?")[1]
             }
         },
         mounted() {
+            this.onLoad();
             this.loadProfilePhoto();
             this.loadAllPhotos();
             this.loadFollow();
         },
         methods:{
+            /**
+             * Metoda wyłączająca przyciski jeżeli znajdujemy się na naszej stronie, oraz ustawiająca link do galerii
+             */
+            onLoad(){
+                document.getElementById('shade-link').href = 'http://localhost:8080/#/photo-gallery?' + this.profile;
+                if(this.currentUser.uid == this.profile){
+                    const buttons = document.getElementById('profile-buttons');
+                    buttons.style.display = "none";
+                }
+            },
+
             /**
              * Metoda ładująca zdjęcie profilowe z bazy danych w firebase
              * storageRef - referencja do storage w naszym firebase
@@ -146,11 +157,6 @@
                         }
                     });
                 });
-
-                if(this.currentUser.uid == this.profile){
-                    const buttons = document.getElementById('profile-buttons');
-                    buttons.style.display = "none";
-                }
             },
 
             /**
