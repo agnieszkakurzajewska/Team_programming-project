@@ -58,12 +58,16 @@
 <script>
     import firebase from 'firebase';
     import db from './firebaseInit';
+    require('firebase/auth');
 
     export default {
         name: "ProfilePage",
         data() {
             return{
+                currentUser: firebase.auth().currentUser,
                 profilePicture: '',
+                followers: 0,
+                following: 0,
                 //allPictures: [], to na przyszłość jakbym miał czas zrobić to ładniej
                 storageRef: firebase.storage().ref(),
                 profile: location.href.split("?")[1]
@@ -85,7 +89,6 @@
                 db.collection('Profiles').get().then((snapshot) => {
                     snapshot.docs.forEach((doc) => {
                         if(doc.data().id_user.id == this.profile){
-                            console.log(doc.data());
                             this.profilePicture = 'images/' + doc.data().photo;
                             storageRef.child(this.profilePicture).getDownloadURL().then(function (url) {
                                 var img = document.getElementById('profile-photo');
@@ -93,6 +96,8 @@
                             });
                         }
                     });
+                }).catch((error) => {
+                    console.log(error);
                 });
             },
 
@@ -117,28 +122,92 @@
                                     var img = containers[i];
                                     img.src = url;
                                     i += 1;
+                                }).catch(() => {
                                 });
                             }
                         }
                     });
                 });
             },
+            /**
+             * Metoda ładująca followersów z bazy danych i chowająca przyciski jeżeli użytkownik przegląda swój profil
+             */
             loadFollow(){
-                var followers = document.getElementById('followers-count');
-                var following = document.getElementById('following-count');
+                const followers = document.getElementById('followers-count');
+                const following = document.getElementById('following-count');
 
                 db.collection('Profiles').get().then((snapshot) => {
                     snapshot.docs.forEach((doc) => {
                         if(doc.data().id_user.id == this.profile){
-                            followers.innerHTML = 'Followers: ' + doc.data().followers;
-                            following.innerHTML = 'Following: ' + doc.data().following;
+                            this.followers = doc.data().followers;
+                            this.following = doc.data().following;
+                            followers.innerHTML = 'Followers: ' + this.followers;
+                            following.innerHTML = 'Following: ' + this.following;
                         }
                     });
                 });
+
+                if(this.currentUser.uid == this.profile){
+                    const buttons = document.getElementById('profile-buttons');
+                    buttons.style.display = "none";
+                }
             },
+
+            /**
+             * Funkcje wyświetlające followersów (jeszcze do zrobienia)
+             */
             showFollowers(){},
             showFollowing(){},
+
+            /**
+             * funkcja zajmująca się dodawaniem/usuwaniem followersów
+             * data - struktura zawierająca referencje do profili użytkowników
+             */
             follow(){
+                let data = {
+                    id_follower: db.doc('Users/' + this.currentUser.uid),
+                    id_user: db.doc('Users/' + this.profile)
+                };
+                db.collection('Followers').get().then((snapshot) => {
+                    let broken = false;
+                    for(let i=0; i<snapshot.size; i++) {
+                        if ((snapshot.docs[i].data().id_user.id == data.id_user.id) && (snapshot.docs[i].data().id_follower.id == data.id_follower.id)) {
+                            console.log("already followed");
+                            db.collection('Followers').doc(snapshot.docs[i].id).delete();
+                            db.collection('Profiles').get().then((profiles) => {
+                                profiles.docs.forEach((profile) => {
+                                    if(profile.data().id_user.id == this.profile){
+                                        this.followers--;
+                                        db.collection('Profiles').doc(profile.id).update({followers: this.followers})
+                                    }
+                                    if(profile.data().id_user.id == this.currentUser.uid){
+                                        this.following--;
+                                        db.collection('Profiles').doc(profile.id).update({following: this.following})
+                                    }
+                                });
+                            });
+                            console.log("deletion complete");
+                            broken = true;
+                        }
+                    }
+                    if(!broken){
+                        db.collection('Followers').doc().set(data);
+                        db.collection('Profiles').get().then((profiles) => {
+                            profiles.docs.forEach((profile) => {
+                                if(profile.data().id_user.id == this.profile){
+                                    this.followers++;
+                                    db.collection('Profiles').doc(profile.id).update({followers: this.followers})
+                                }
+                                if(profile.data().id_user.id == this.currentUser.uid){
+                                    this.following++;
+                                    db.collection('Profiles').doc(profile.id).update({following: this.following})
+                                }
+                            });
+                        });
+                        console.log("new follower added");
+                    }
+                });
+                this.loadFollow();
             },
             message(){}
         }
