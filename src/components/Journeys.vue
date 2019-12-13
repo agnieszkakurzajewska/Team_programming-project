@@ -55,104 +55,26 @@
 
           </v-flex>
 
+          <div v-for="jour in journeys"  v-bind:key="jour.id">
+            <v-card  class="podroz" elevation="10" >
+              <v-card-text>
+                <div class="subheading">{{jour.data().destination}}</div>
+                <div class="green--text">data rozpoczecia</div>
+                <div class="green--text">{{mydate(jour.data().start_date.toDate())}}</div>
+                <div class="green--text">data zakończenia</div>
+                <div class="green--text">{{mydate(jour.data().end_date.toDate())}}</div>
 
-          <v-card  class="podroz" elevation="10" >
-            <v-card-text>
-              <div class="subheading">Majorka</div>
-              <div class="green--text">data rozpoczecia</div>
-              <div class="green--text">25.10.2019</div>
-              <div class="green--text">data zakończenia</div>
-              <div class="green--text">25.10.2019</div>
+                <v-btn class="WejdzWPodroz" >
+                  Więcej
+                </v-btn>
+                <v-btn class="UsunPodroz" @click="usunmnie(jour.id)" >
+                  Opuść
+                </v-btn>
 
-              <v-btn class="UsunPodroz" >
-                Usuń
-              </v-btn>
+              </v-card-text>
 
-            </v-card-text>
-
-          </v-card>
-          <v-card  class="podroz" elevation="10" >
-            <v-card-text>
-              <div class="subheading">Majorka</div>
-              <div class="green--text">data rozpoczecia</div>
-              <div class="green--text">25.10.2019</div>
-              <div class="green--text">data zakończenia</div>
-              <div class="green--text">25.10.2019</div>
-
-              <v-btn class="UsunPodroz" >
-                Usuń
-              </v-btn>
-
-            </v-card-text>
-
-          </v-card>
-          <v-card  class="podroz" elevation="10" >
-            <v-card-text>
-              <div class="subheading">Majorka</div>
-              <div class="green--text">data rozpoczecia</div>
-              <div class="green--text">25.10.2019</div>
-              <div class="green--text">data zakończenia</div>
-              <div class="green--text">25.10.2019</div>
-
-              <v-btn class="UsunPodroz" >
-                Usuń
-              </v-btn>
-
-            </v-card-text>
-
-          </v-card>
-
-          </v-card>
-          <v-card  class="podroz" elevation="10" >
-            <v-card-text>
-              <div class="subheading">Majorka</div>
-              <div class="green--text">data rozpoczecia</div>
-              <div class="green--text">25.10.2019</div>
-              <div class="green--text">data zakończenia</div>
-              <div class="green--text">25.10.2019</div>
-
-              <v-btn class="UsunPodroz" >
-                Usuń
-              </v-btn>
-
-            </v-card-text>
-
-          </v-card>
-
-          <v-card  class="podroz" elevation="10" >
-            <v-card-text>
-              <div class="subheading">Majorka</div>
-              <div class="green--text">data rozpoczecia</div>
-              <div class="green--text">25.10.2019</div>
-              <div class="green--text">data zakończenia</div>
-              <div class="green--text">25.10.2019</div>
-
-              <v-btn class="UsunPodroz" >
-                Usuń
-              </v-btn>
-
-            </v-card-text>
-
-          </v-card>
-          <v-card  class="podroz" elevation="10" >
-            <v-card-text>
-              <div class="subheading">Majorka</div>
-              <div class="green--text">data rozpoczecia</div>
-              <div class="green--text">25.10.2019</div>
-              <div class="green--text">data zakończenia</div>
-              <div class="green--text">25.10.2019</div>
-
-              <v-btn class="UsunPodroz" >
-                Usuń
-              </v-btn>
-
-            </v-card-text>
-
-          </v-card>
-
-
-
-
+            </v-card>
+          </div>
 
         </v-layout>
 
@@ -167,6 +89,43 @@
 </template>
 
 <script>
+  import firebase from 'firebase'
+  import {getTravels,deleteFromJourney} from './DBFunctions';
+  export default {
+    data(){
+      return{
+        dialog: false,
+        journeys: []
+      }
+    },
+    created() {
+      var self=this;
+      getTravels(firebase.auth().currentUser.uid).then(function (output) {
+        output.forEach(jour=>{self.journeys.push(jour)})
+      })
+    },
+    methods: {
+      mydate(d) {
+        let day = d.getDate();
+        let month = d.getMonth()+1;
+        let year = d.getFullYear();
+        let newdate = day + "/" + month + "/" + year;
+        return newdate;
+      },
+      reloadPage(){
+        window.location.reload()
+      },
+      usunmnie(jourid) {
+        var self=this;
+          // eslint-disable-next-line no-console
+        console.log('jourid1: ', jourid);
+        deleteFromJourney(firebase.auth().currentUser.uid,jourid).then(function() {
+          self.reloadPage();
+        })
+        //this.reloadPage();
+      }
+    }
+  }
 </script>
 
 <style lang="scss">
@@ -181,6 +140,7 @@
 
     margin-top: 40px;
     width:  30.1%;
+    min-width: 280px;
     height: 280px;
     display: flex;
     justify-content: center;
@@ -216,18 +176,8 @@
     margin-right: 10px;
 
   }
-</style>
-
-<script>
-  export default {
-    data () {
-      return {
-
-
-        dialog: false,
-      }
-    },
-
+  .WejdzWPodroz{
+    float: left;
+    margin-left: 10px;
   }
-
-</script>
+</style>

@@ -1,3 +1,4 @@
+import firebase from "firebase";
 import db from './firebaseInit'
 
 // dodaj uzytkownika
@@ -23,6 +24,7 @@ function addUser(id,email) {
         photo: '',
     };
     db.collection('Profiles').doc().set(profileData);
+    // eslint-disable-next-line no-console
     console.log('account created');
 }
 
@@ -75,20 +77,20 @@ function getUserName(id) {
 //       somestring = output; // zwroci array ze stringami
 //   }
 function getTravels(id) {
-    let userRef = db.collection('Travel_Members');
-    return userRef.where('id_user', '==', id).get()
+    let userRef = db.collection('Travels');
+    return userRef.where('travelers', 'array-contains', id).get()
         .then(snapshot => {
             var travs = [];
             if (snapshot.empty) {
                 // eslint-disable-next-line no-console
-                console.log('No matching documents.');
+                console.log('No matching documents.',id);
                 return travs;
             }
 
             snapshot.forEach(doc => {
                 // eslint-disable-next-line no-console
-                console.log(doc.id, '=>', doc.data(), typeof doc.data().id_travel);
-                travs.push(doc.data().id_travel);
+                console.log(doc.id, '=>', doc.data(),);
+                travs.push(doc);
             });
             return travs;
         })
@@ -123,6 +125,14 @@ function allusers() {
             return;
         });
 }
+function deleteFromJourney(id,jourid) {
+    const FieldValue = firebase.firestore.FieldValue;
+    // eslint-disable-next-line no-console
+    console.log('jourid2: ', id);
+    return db.collection('Travels').doc(jourid).update({"travelers": FieldValue.arrayRemove(id)}).then({
+
+    })
+}
 
 
-export {addUser,setUserName,setUserLastName,getUserName,getTravels,allusers};
+export {addUser,setUserName,setUserLastName,getUserName,getTravels,allusers,deleteFromJourney};
