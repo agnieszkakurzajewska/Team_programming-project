@@ -12,44 +12,12 @@
         <v-layout row wrap>
           <v-flex class="navbar" color="background" >
 
-
-              <v-dialog v-model="dialog" persistent max-width="600px">
-                <template v-slot:activator="{ on }">
-                  <v-btn class="znajdz" color="primary" dark v-on="on">Nowa podróż +</v-btn>
-                </template>
-                <v-card>
-                  <v-card-title>
-                    <span class="headline">Nowa podróż</span>
-                  </v-card-title>
-                  <v-card-text>
+            <v-btn class="WyszukajPodróż" v-on="on" color="primary" to="/add-journey">
+              Nowa podróż
+            </v-btn>
 
 
-                        <v-col cols="12" >
-                          <v-text-field label="Cel podróży" ></v-text-field>
-                        </v-col>
-
-
-                        <v-col cols="12">
-                          <v-text-field label="Data rozpoczęcia" ></v-text-field>
-                        </v-col>
-                        <v-col cols="12">
-                          <v-text-field label="Data zakończenia" type="password" ></v-text-field>
-                        </v-col>
-
-
-
-
-                  </v-card-text>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="dialog = false">Zamknij</v-btn>
-                    <v-btn @click="dialog = false" color="blue darken-1" text>Zapisz</v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
-
-
-              <v-btn class="WyszukajPodróż" v-on="on" color="primary">
+              <v-btn class="znajdz" v-on="on" color="primary">
                 Znajdź podróż
               </v-btn>
 

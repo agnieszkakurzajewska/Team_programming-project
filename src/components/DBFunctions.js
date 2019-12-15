@@ -28,6 +28,17 @@ function addUser(id,email) {
     console.log('account created');
 }
 
+function addJourney(dest,endd,userid,begd) {
+    let data = {
+        destination: dest,
+        end_date: firebase.firestore.Timestamp.fromDate(endd),
+        id_organizer: userid,
+        start_date: firebase.firestore.Timestamp.fromDate(begd),
+        travelers: [userid]
+    };
+    db.collection('Travels').add(data);
+}
+
 // ustal imie uzytkownika
 // wzorzec:
 // if (firebase.auth().currentUser)
@@ -101,6 +112,31 @@ function getTravels(id) {
         });
 }
 
+function getRecommendations() {
+    let userRef = db.collection('Recommendations');
+    return userRef.get()
+        .then(snapshot => {
+            var recs = [];
+            if (snapshot.empty) {
+                // eslint-disable-next-line no-console
+                console.log('No matching documents.');
+                return recs;
+            }
+
+            snapshot.forEach(doc => {
+                // eslint-disable-next-line no-console
+                console.log(doc.id, '=>', doc.data());
+                recs.push(doc.data().dest);
+            });
+            return recs;
+        })
+        .catch(err => {
+            // eslint-disable-next-line no-console
+            console.log('Error getting documents', err);
+            return;
+        });
+}
+
 function allusers() {
     let userRef = db.collection('Users');
     return userRef.get()
@@ -135,4 +171,4 @@ function deleteFromJourney(id,jourid) {
 }
 
 
-export {addUser,setUserName,setUserLastName,getUserName,getTravels,allusers,deleteFromJourney};
+export {addUser,setUserName,setUserLastName,getUserName,getTravels,allusers,deleteFromJourney,addJourney,getRecommendations};
