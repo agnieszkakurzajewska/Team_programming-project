@@ -22,7 +22,7 @@
 
 <script>
   import firebase from 'firebase'
-  import {getUserName, setUserName,getTravels,allusers} from './DBFunctions'
+  import {getUser, setUserName,getTravels,allusers} from './DBFunctions'
 
   export default {
     data(){
@@ -36,8 +36,8 @@
         setUserName(firebase.auth().currentUser.uid,s);
       },
       nameget: function () {
-        getUserName(firebase.auth().currentUser.uid).then(function (output) {
-          document.getElementById("myp").innerText = output;
+        getUser(firebase.auth().currentUser.uid).then(function (output) {
+          document.getElementById("myp").innerText = output.name;
         })
       },
       travelsget: function () {

@@ -55,13 +55,13 @@ function setUserLastName(id,nazwisko) {
     db.collection('Users').doc(id).update({last_name: nazwisko});
 }
 
-// pobierz imie uzytkownika
+// pobierz uzytkownika
 // wzorzec
 // if (firebase.auth().currentUser)
-//   getUserName(firebase.auth().currentUser.uid).then(function (output) {
+//   getUser(firebase.auth().currentUser.uid).then(function (output) {
 //           somestring = output;
 //   }
-function getUserName(id) {
+function getUser(id) {
     let userRef = db.collection('Users').doc(id);
     return userRef.get()
         .then( function(doc) {
@@ -71,8 +71,8 @@ function getUserName(id) {
                 return "";
             } else {
                 // eslint-disable-next-line no-console
-                console.log('Document data:',doc.data().name);
-                return doc.data().name;
+                console.log('Document data:',doc.data());
+                return doc.data();
             }
         })
         .catch(err => {
@@ -192,4 +192,4 @@ function deleteFromJourney(id,jourid) {
 }
 
 
-export {addUser,setUserName,setUserLastName,getUserName,getTravels,allusers,deleteFromJourney,addJourney,getRecommendations,getTravel};
+export {addUser,setUserName,setUserLastName,getTravels,allusers,deleteFromJourney,addJourney,getRecommendations,getTravel,getUser};
