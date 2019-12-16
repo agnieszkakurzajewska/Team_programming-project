@@ -32,7 +32,7 @@
                 <div class="green--text">data zakończenia</div>
                 <div class="green--text">{{mydate(jour.data().end_date.toDate())}}</div>
 
-                <v-btn class="WejdzWPodroz" >
+                <v-btn class="WejdzWPodroz" v-bind:href="'/#/journey?'+jour.id" >
                   Więcej
                 </v-btn>
                 <v-btn class="UsunPodroz" @click="usunmnie(jour.id)" >

@@ -15,6 +15,7 @@ import 'firebase/firestore';
 import ProfilePage from "../components/ProfilePage";
 import PhotoGallery from "../components/PhotoGallery";
 import Chats from "../components/Chats";
+import JourneyPage from "../components/JourneyPage";
 
 Vue.use(Router)
 
@@ -104,6 +105,14 @@ let router =  new Router({
       path: '/chats',
       name: 'Chats',
       component: Chats,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/journey',
+      name: 'Journey',
+      component: JourneyPage,
       meta: {
         requiresAuth: true
       }

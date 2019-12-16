@@ -112,6 +112,27 @@ function getTravels(id) {
         });
 }
 
+function getTravel(id) {
+    let Ref = db.collection('Travels').doc(id);
+    return Ref.get()
+        .then( function(doc) {
+            if (!doc.exists) {
+                // eslint-disable-next-line no-console
+                console.log('No such document!');
+                return "";
+            } else {
+                // eslint-disable-next-line no-console
+                console.log('Document data:',doc.data());
+                return doc.data();
+            }
+        })
+        .catch(err => {
+            // eslint-disable-next-line no-console
+            console.log('Error getting document', err);
+            return "";
+        });
+}
+
 function getRecommendations() {
     let userRef = db.collection('Recommendations');
     return userRef.get()
@@ -171,4 +192,4 @@ function deleteFromJourney(id,jourid) {
 }
 
 
-export {addUser,setUserName,setUserLastName,getUserName,getTravels,allusers,deleteFromJourney,addJourney,getRecommendations};
+export {addUser,setUserName,setUserLastName,getUserName,getTravels,allusers,deleteFromJourney,addJourney,getRecommendations,getTravel};
