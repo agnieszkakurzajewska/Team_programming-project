@@ -8,13 +8,69 @@ To Do: Zaproszenia do podróży, uprawnienia założyciela, uładnienia, edycje,
                 <v-card-text>
 
                     <div class="myarea">
+                        <div class="mytext2">Oczekujący: </div>
+                    </div>
+
+                </v-card-text>
+            </v-card>
+
+            <div v-for="user in jpending"  v-bind:key="user">
+                <v-card  class="useritem" elevation="10" >
+                    <v-card-text>
+
+                        <div class="myarea">
+                            <div class="mytext">{{user.name == "" ? "Brak imienia" : user.name}} {{user.lastname == "" ? "Brak nazwiska" : user.lastname}} </div>
+                            <div class="mybuttons">
+                                <v-btn class="chatbutton" @click="chat(user.id)" >
+                                    Chat
+                                </v-btn>
+                                <v-btn class="profilebutton" @click="profile(user.id)" >
+                                    Profil
+                                </v-btn>
+                            </div>
+                            <v-btn @click="addtojourney(user.id)" class="mx-2" color="indigo" dark fab x-small>
+                                <v-icon dark>mdi-plus</v-icon>
+                            </v-btn>
+                            <v-btn @click="decline(user.id)" class="mx-2" color="indigo" dark fab x-small>
+                                <v-icon dark>mdi-minus</v-icon>
+                            </v-btn>
+                        </div>
+
+                    </v-card-text>
+                </v-card>
+            </div>
+
+            <v-card  class="useritem" elevation="10" >
+                <v-card-text>
+
+                    <div class="myarea">
                         <div class="mytext2">Uczestnicy podróży: </div>
                     </div>
 
                 </v-card-text>
-
             </v-card>
-            <div v-for="user in jusers"  v-bind:key="user">
+
+            <div v-for="user in admin"  v-bind:key="user">
+                <v-card  class="useritem" elevation="10" >
+                    <v-card-text>
+
+                        <div class="myarea">
+                            <div class="mytextadmin">{{user.name == "" ? "Brak imienia" : user.name}} {{user.lastname == "" ? "Brak nazwiska" : user.lastname}} </div>
+                            <div class="mybuttons">
+                                <v-btn class="chatbutton" @click="chat(user.id)" >
+                                    Chat
+                                </v-btn>
+                                <v-btn class="profilebutton" @click="profile(user.id)" >
+                                    Profil
+                                </v-btn>
+                            </div>
+                        </div>
+
+                    </v-card-text>
+                </v-card>
+            </div>
+
+            <div v-for="user in nonadmin"  v-bind:key="user">
                 <v-card  class="useritem" elevation="10" >
                     <v-card-text>
 
@@ -31,7 +87,6 @@ To Do: Zaproszenia do podróży, uprawnienia założyciela, uładnienia, edycje,
                         </div>
 
                     </v-card-text>
-
                 </v-card>
             </div>
             <v-card  class="useritem" elevation="10" >
@@ -67,6 +122,9 @@ To Do: Zaproszenia do podróży, uprawnienia założyciela, uładnienia, edycje,
                         </v-btn>
                     </div>
                 </div>
+                <!--
+                chat?
+                -->
             </div>
         </section>
     </main>
@@ -75,7 +133,7 @@ To Do: Zaproszenia do podróży, uprawnienia założyciela, uładnienia, edycje,
 <script>
     import firebase from 'firebase';
     //import db from './firebaseInit';
-    import {getTravel,getUser} from './DBFunctions';
+    import {getTravel,getUser,pendingtotraveler,pendingdecline} from './DBFunctions';
     require('firebase/auth');
 
     export default {
@@ -86,7 +144,9 @@ To Do: Zaproszenia do podróży, uprawnienia założyciela, uładnienia, edycje,
                 jbeg: null,
                 jend: null,
                 jusers: [],
+                jpending: [],
                 jdesc: "",
+                jorg: "",
                 myjourney: location.href.split("?")[1]
             }
         },
@@ -95,9 +155,10 @@ To Do: Zaproszenia do podróży, uprawnienia założyciela, uładnienia, edycje,
         },
         methods: {
             onLoad(){
-                var self = this
+                var self = this;
                 getTravel(this.myjourney).then(function (output) {
                     self.jname = output.destination;
+                    self.jorg = output.id_organizer;
                     self.jbeg = output.start_date.toDate().toISOString().substr(0,10);
                     self.jend = output.end_date.toDate().toISOString().substr(0,10);
                     output.travelers.forEach(us => {
@@ -112,6 +173,18 @@ To Do: Zaproszenia do podróży, uprawnienia założyciela, uładnienia, edycje,
                             }
                         });
                     });
+                    output.pending.forEach(us => {
+                        getUser(us).then( function (output2) {
+                            if (us !== firebase.auth().currentUser.uid) {
+                                let data = {
+                                    id: us,
+                                    name: output2.name,
+                                    lastname: output2.last_name
+                                };
+                                self.jpending.push(data);
+                            }
+                        });
+                    });
                     // eslint-disable-next-line no-console
                     console.log(typeof output.start_date)
                 })
@@ -121,6 +194,48 @@ To Do: Zaproszenia do podróży, uprawnienia założyciela, uładnienia, edycje,
             },
             profile(id){
                 window.location.href="/#/profile-page?"+id;
+            },
+            addtojourney(id){
+                var self = this;
+                // tylko organizator może to zrobić
+                if (self.jorg === firebase.auth().currentUser.uid)
+                {
+                    pendingtotraveler(id,this.myjourney).then(function() {
+                        self.$router.go()
+                    })
+                }
+                else
+                {
+                    alert("Nie masz uprawnień aby dodawać nowych podróżników!");
+                }
+            },
+            decline(id){
+                var self = this;
+                // tylko organizator może to zrobić
+                if (self.jorg === firebase.auth().currentUser.uid)
+                {
+                    pendingdecline(id,this.myjourney).then(function() {
+                        self.$router.go()
+                    })
+                }
+                else
+                {
+                    alert("Nie masz uprawnień aby odrzucać podróżników!");
+                }
+            },
+        },
+        computed: {
+            nonadmin: function () {
+                var self =this;
+                return this.jusers.filter(function (u) {
+                    return u.id != self.jorg;
+                })
+            },
+            admin: function () {
+                var self =this;
+                return this.jusers.filter(function (u) {
+                    return u.id == self.jorg;
+                })
             }
         }
     }
@@ -172,6 +287,13 @@ To Do: Zaproszenia do podróży, uprawnienia założyciela, uładnienia, edycje,
         font-weight: bold;
         color: #222222;
     }
+    .mytextadmin{
+        width: 50%;
+        display: flex;
+        font-size: 20px;
+        font-family: Arial;
+        color: gold;
+    }
     .mybuttons{
         width: 50%;
         display: flex;
@@ -184,6 +306,11 @@ To Do: Zaproszenia do podróży, uprawnienia założyciela, uładnienia, edycje,
     .profilebutton{
         float: right;
         width: 45%;
+        margin: 2px;
+    }
+    .addbutton{
+        float: right;
+        width: 25%;
         margin: 2px;
     }
     .title{

@@ -34,7 +34,8 @@ function addJourney(dest,endd,userid,begd) {
         end_date: firebase.firestore.Timestamp.fromDate(endd),
         id_organizer: userid,
         start_date: firebase.firestore.Timestamp.fromDate(begd),
-        travelers: [userid]
+        travelers: [userid],
+        pending: []
     };
     db.collection('Travels').add(data);
 }
@@ -182,6 +183,32 @@ function allusers() {
             return;
         });
 }
+
+function allTravels() {
+    let userRef = db.collection('Travels');
+    return userRef.get()
+        .then(snapshot => {
+            var travels = [];
+            if (snapshot.empty) {
+                // eslint-disable-next-line no-console
+                console.log('No matching documents.');
+                return travels;
+            }
+
+            snapshot.forEach(doc => {
+                // eslint-disable-next-line no-console
+                console.log(doc.id, '=>', doc);
+                travels.push(doc);
+            });
+            return travels;
+        })
+        .catch(err => {
+            // eslint-disable-next-line no-console
+            console.log('Error getting documents', err);
+            return;
+        });
+}
+
 function deleteFromJourney(id,jourid) {
     const FieldValue = firebase.firestore.FieldValue;
     // eslint-disable-next-line no-console
@@ -190,6 +217,28 @@ function deleteFromJourney(id,jourid) {
 
     })
 }
+function pendingtotraveler(id,jourid) {
+    const FieldValue = firebase.firestore.FieldValue;
+
+    db.collection('Travels').doc(jourid).update({"travelers": FieldValue.arrayUnion(id)});
+    return db.collection('Travels').doc(jourid).update({"pending": FieldValue.arrayRemove(id)}).then({
+
+    })
+}
+
+function pendingdecline(id,jourid) {
+    const FieldValue = firebase.firestore.FieldValue;
+
+    return db.collection('Travels').doc(jourid).update({"pending": FieldValue.arrayRemove(id)}).then({
+
+    })
+}
+
+function addpending(id,jourid) {
+    const FieldValue = firebase.firestore.FieldValue;
+
+    db.collection('Travels').doc(jourid).update({"pending": FieldValue.arrayUnion(id)});
+}
 
 
-export {addUser,setUserName,setUserLastName,getTravels,allusers,deleteFromJourney,addJourney,getRecommendations,getTravel,getUser};
+export {addUser,setUserName,setUserLastName,getTravels,allusers,deleteFromJourney,addJourney,getRecommendations,getTravel,getUser,pendingtotraveler,allTravels,pendingdecline,addpending};
