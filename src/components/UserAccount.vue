@@ -10,7 +10,10 @@
 	  <v-row>
         <v-text-field
 		  value=""
-          label="Imię"
+          label=""
+          id="name_id"
+          ref="name_id"
+          v-model="name"
           :placeholder=name
 		  :disabled="nameLocked"
         ></v-text-field>
@@ -23,6 +26,9 @@
         <v-text-field
 		  value=""
           label="Nazwisko"
+          id="lastname_id"
+          ref="lastname_id"
+          v-model="lastname"
           :placeholder=lastname
 		  :disabled="lastnameLocked"
         ></v-text-field>
@@ -36,7 +42,10 @@
         <v-text-field
           :rules="emailRules"
 		  value=""
+		  id="email_id"
+		  ref="email_id"
           label="E-mail"
+          v-model="email"
           :placeholder = email
 		  :disabled="emailLocked"
         ></v-text-field>
@@ -53,6 +62,8 @@
           :type="passwordVisible ? 'text' : 'password'"
           name="input-10-2"
           label="Hasło"
+          id="password_id"
+          ref="password_id"
           :placeholder=password
           hint="At least 8 characters"
           value=""
@@ -65,7 +76,7 @@
       </v-col>
 
       <v-col>
-        <v-btn v-on:click="" color="primary">
+        <v-btn v-on:click="setName()" color="primary">
           zapisz zmiany
         </v-btn>
       </v-col>
@@ -77,7 +88,7 @@
 
 <script>
   import firebase from 'firebase'
-  import {getUser} from './DBFunctions'
+  import {getUser, setUserName, setUserLastName} from './DBFunctions'
 
 
   export default {
@@ -115,6 +126,16 @@
                });
 
             }
-        }
+        },
+
+    methods: {
+            setName: function() {
+                if (firebase.auth().currentUser) {
+                   setUserName(firebase.auth().currentUser.uid, this.name);
+                   setUserLastName(firebase.auth().currentUser.uid, this.lastname);
+                }
+            }
+      }
   }
+
 </script>
