@@ -34,6 +34,7 @@
         name: "Chats",
         data(){
             return{
+                oldUser: true,
                 currentUser: firebase.auth().currentUser,
                 currentTarget: '',
                 currentChatName: '',
@@ -80,9 +81,13 @@
              * funkcja próbująca otworzyć czat z nowym użytkownikiem
              */
             openNewChatRoom(){
+                this.oldUser = false;
                 let user = document.getElementById('new-conv-user').value;
+                /*
                 this.currentTarget = user;
-                this.getChatRoom(user);
+                this.getChatRoom(user);*/
+                window.location.href = window.location.href.split("?")[0] + "?" + user;
+                location.reload();
             },
 
             /**
@@ -136,7 +141,8 @@
              * funkcja zwracająca czat z danym użytkownikiem (tworząca go jeżeli takowy nie istnieje)
              */
             async getChatRoom(user) {
-                while(true) {
+                let notified = false;
+                while(this.oldUser) {
                     db.collection('Users').get().then((result) => {
                         let exists = false;
                         result.docs.forEach((doc) => {
@@ -161,8 +167,9 @@
                                     this.loadChatRoom();
                                 });
                             });
-                        } else {
+                        } else if(!notified){
                             alert("user doesn't exist!");
+                            notified = true;
                         }
                     });
                     await this.sleep(200);
