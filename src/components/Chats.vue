@@ -3,7 +3,6 @@
         <section id="chat-users">
             <div class="header"><p>Chat</p></div>
             <article id="users-list">
-                <div class="conversation">Ziomuś</div>
             </article>
             <div id="new-conversation-div">
                 <input id="new-conv-user">
@@ -12,7 +11,7 @@
         </section>
         <section id="chat-window">
             <div class="header" id="user-header">
-                <p id="target-name">Ziomuś</p>
+                <p id="target-name">Użytkownik</p>
             </div>
             <article id="main-chat">
             </article>
@@ -50,6 +49,12 @@
             onLoad(){
                 if(this.profile.length > 5){
                     this.currentTarget = this.profile;
+                    this.currentTarget = db.collection('Users').doc(this.profile).get().then(snapshot => {
+                        if(snapshot.exists){
+                            this.currentTarget = snapshot.get('name');
+                            this.currentTarget += " " + snapshot.get('last_name');
+                        }
+                    });
                     this.getChatRoom(this.profile);
                 }
             },
@@ -59,13 +64,15 @@
              */
             sendMessage(){
                 let text = document.getElementById('new-text').value;
-                let data = {
-                    text: text,
-                    author: this.currentUser.uid,
-                    target: this.currentTarget
-                };
-                this.messages.push(data);
-                db.collection('Chats').doc(this.currentChatName).update({messages: this.messages});
+                if(text != "") {
+                    let data = {
+                        text: text,
+                        author: this.currentUser.uid,
+                        target: this.currentTarget
+                    };
+                    this.messages.push(data);
+                    db.collection('Chats').doc(this.currentChatName).update({messages: this.messages});
+                }
                 this.loadChatRoom();
             },
 
@@ -128,35 +135,41 @@
             /**
              * funkcja zwracająca czat z danym użytkownikiem (tworząca go jeżeli takowy nie istnieje)
              */
-            getChatRoom(user) {
-                db.collection('Users').get().then((result) => {
-                    let exists = false;
-                    result.docs.forEach((doc) => {
-                        if(doc.id == user)
-                            exists = true;
-                    });
-                    if(exists){
-                        if (user < this.currentUser.uid) {
-                            this.currentChatName = user + this.currentUser.uid;
-                        } else {
-                            this.currentChatName = this.currentUser.uid + user;
-                        }
-                        db.collection('Chats').doc(this.currentChatName).get().then((result) => {
-                            let data = result.data();
-                            if(typeof data == "undefined"){
-                                console.log("creating new chat room");
-                                db.collection('Chats').doc(this.currentChatName).set({messages: []});
-                            }
-                            this.chatroom = db.collection('Chats').doc(this.currentChatName);
-                            this.chatroom.get().then((result) => {
-                                this.messages = result.data().messages;
-                                this.loadChatRoom();
-                            });
+            async getChatRoom(user) {
+                while(true) {
+                    db.collection('Users').get().then((result) => {
+                        let exists = false;
+                        result.docs.forEach((doc) => {
+                            if (doc.id == user)
+                                exists = true;
                         });
-                    }else{
-                        alert("user doesn't exist!");
-                    }
-                });
+                        if (exists) {
+                            if (user < this.currentUser.uid) {
+                                this.currentChatName = user + this.currentUser.uid;
+                            } else {
+                                this.currentChatName = this.currentUser.uid + user;
+                            }
+                            db.collection('Chats').doc(this.currentChatName).get().then((result) => {
+                                let data = result.data();
+                                if (typeof data == "undefined") {
+                                    console.log("creating new chat room");
+                                    db.collection('Chats').doc(this.currentChatName).set({messages: []});
+                                }
+                                this.chatroom = db.collection('Chats').doc(this.currentChatName);
+                                this.chatroom.get().then((result) => {
+                                    this.messages = result.data().messages;
+                                    this.loadChatRoom();
+                                });
+                            });
+                        } else {
+                            alert("user doesn't exist!");
+                        }
+                    });
+                    await this.sleep(200);
+                }
+            },
+            sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
             }
         }
     }
