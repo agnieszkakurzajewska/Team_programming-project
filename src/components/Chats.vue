@@ -83,9 +83,6 @@
             openNewChatRoom(){
                 this.oldUser = false;
                 let user = document.getElementById('new-conv-user').value;
-                /*
-                this.currentTarget = user;
-                this.getChatRoom(user);*/
                 window.location.href = window.location.href.split("?")[0] + "?" + user;
                 location.reload();
             },
@@ -142,7 +139,7 @@
              */
             async getChatRoom(user) {
                 let notified = false;
-                while(this.oldUser) {
+                //while(this.oldUser) { odkomentować przed prezentacją
                     db.collection('Users').get().then((result) => {
                         let exists = false;
                         result.docs.forEach((doc) => {
@@ -172,8 +169,9 @@
                             notified = true;
                         }
                     });
-                    await this.sleep(200);
-                }
+                    //await this.sleep(200); odkomentować przed prezentacją
+
+                //} odkomentować przed prezentacją
             },
             sleep(ms) {
                 return new Promise(resolve => setTimeout(resolve, ms));
